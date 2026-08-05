@@ -22,7 +22,15 @@ return {
         lualine_c = {
           '%=', -- center alignment
         },
-        lualine_x = { 'buffers' },
+        lualine_x = {
+          function()
+            local bufs = vim.tbl_filter(function(b)
+              return vim.api.nvim_buf_is_valid(b) and vim.bo[b].buflisted
+            end, vim.api.nvim_list_bufs())
+            local cur_buf = vim.api.nvim_get_current_buf()
+            return '(buf #' .. cur_buf .. ' of ' .. #bufs .. ')'
+          end,
+        },
         lualine_y = { 'filetype', 'progress' },
         lualine_z = {
           { 'location', padding = { left = 2, right = 2 } },
