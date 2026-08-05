@@ -1,0 +1,137 @@
+{
+  "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+  "version": 3,
+  "final_space": true,
+
+  "console_title_template": "{{ if .Segments.Git.RepoName }}{{ .Segments.Git.RepoName }}{{ else }}{{ .Folder }}{{ end }}",
+
+  "blocks": [
+    {
+      "type": "prompt",
+      "alignment": "left",
+      "newline": true,
+      "segments": [
+        {
+          "type": "text",
+          "style": "plain",
+          "foreground": "#E9ECEF",
+          "template": "┌ "
+        },
+        {
+          "type": "session",
+          "style": "powerline",
+          "background": "#4C6EF5",
+          "foreground": "#FFFFFF",
+          "powerline_symbol": "\ue0b0",
+          "template": " {{ if .SSHSession }}SSH {{ end }}{{ .UserName }}@{{ .HostName }} ",
+          "properties": {
+            "display_host": true
+          }
+        },
+        {
+          "type": "path",
+          "style": "powerline",
+          "background": "#FF8C42",
+          "foreground": "#1A1A1A",
+          "powerline_symbol": "\ue0b0",
+          "template": " {{ .Path }} ",
+          "properties": {
+            "style": "agnoster_full"
+          }
+        },
+        {
+          "type": "python",
+          "style": "powerline",
+          "background": "#7B61FF",
+          "foreground": "#FFFFFF",
+          "powerline_symbol": "\ue0b0",
+          "template": " {{ if .Venv }}{{ .Venv }}{{ end }} ",
+          "properties": {
+            "display_mode": "always",
+            "display_virtual_env": true,
+            "display_version": false,
+            "virtual_env_symbol": "py "
+          }
+        },
+        {
+          "type": "git",
+          "style": "powerline",
+          "background": "#FFD166",
+          "foreground": "#1A1A1A",
+          "powerline_symbol": "\ue0b0",
+          "template": " ⎇ {{ .HEAD }}{{ if .BranchStatus }} {{ .BranchStatus }}{{ end }}{{ if .Working.Changed }} {{ .Working.String }}{{ end }}{{ if and (.Working.Changed) (.Staging.Changed) }} │{{ end }}{{ if .Staging.Changed }} {{ .Staging.String }}{{ end }}{{ if gt .StashCount 0 }} ≡ {{ .StashCount }}{{ end }} ",
+          "background_templates": [
+            "{{ if or (.Working.Changed) (.Staging.Changed) }}#F76707{{ end }}",
+            "{{ if and (gt .Ahead 0) (gt .Behind 0) }}#C92A2A{{ end }}",
+            "{{ if gt .Ahead 0 }}#2F9E44{{ end }}",
+            "{{ if gt .Behind 0 }}#5F3DC4{{ end }}"
+          ],
+          "properties": {
+            "branch_icon": "",
+            "branch_ahead_icon": "↑",
+            "branch_behind_icon": "↓",
+            "branch_identical_icon": "≡",
+            "branch_gone": "≢",
+            "commit_icon": "• ",
+            "merge_icon": "◧ ",
+            "rebase_icon": "↺ ",
+            "tag_icon": "◦ ",
+            "cherry_pick_icon": "✓ ",
+            "no_commits_icon": "∅",
+            "fetch_status": true,
+            "fetch_stash_count": true
+          }
+        },
+        {
+          "type": "status",
+          "style": "powerline",
+          "background": "#E03131",
+          "foreground": "#FFFFFF",
+          "powerline_symbol": "\ue0b0",
+          "template": " ERR "
+        }
+      ]
+    },
+
+    {
+      "type": "prompt",
+      "alignment": "left",
+      "segments": [
+        {
+          "type": "time",
+          "style": "plain",
+          "foreground": "#74C0FC",
+          "properties": {
+            "time_format": "15:04:05"
+          }
+        }
+      ]
+    },
+
+    {
+      "type": "prompt",
+      "alignment": "left",
+      "newline": true,
+      "segments": [
+        {
+          "type": "text",
+          "style": "plain",
+          "foreground": "#E9ECEF",
+          "template": "└─>"
+        }
+      ]
+    }
+  ],
+
+  "transient_prompt": {
+    "background": "transparent",
+    "foreground": "#E9ECEF",
+    "template": "> "
+  },
+
+  "secondary_prompt": {
+    "background": "transparent",
+    "foreground": "#ADB5BD",
+    "template": "›"
+  }
+}

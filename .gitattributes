@@ -1,0 +1,28 @@
+# Default: normalize everything to LF, auto-detect text vs binary
+* text=auto eol=lf
+
+# Shell configs — always LF, no exceptions
+.bashrc text eol=lf
+.bash_profile text eol=lf
+.bash_logout text eol=lf
+.zshrc text eol=lf
+.fish text eol=lf
+.profile text eol=lf
+*.sh text eol=lf
+
+# Neovim / Lua configs — always LF
+*.lua text eol=lf
+init.lua text eol=lf
+
+# Zellij / other terminal-native configs
+*.kdl text eol=lf
+*.toml text eol=lf
+
+# PowerShell scripts are the one exception — Windows-native, leave as CRLF
+*.ps1 text eol=crlf
+Microsoft.PowerShell_profile.ps1 text eol=crlf
+
+# Binary files — never touch line endings
+*.png binary
+*.jpg binary
+*.ico binary
