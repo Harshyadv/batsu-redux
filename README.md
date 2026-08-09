@@ -10,7 +10,7 @@
 | :--- | :--- |
 | **Terminal** | [WezTerm](wezterm/) |
 | **Prompt** | [Oh My Posh](oh-my-posh/) |
-| **Shells** | [Fish](fish/) & [Bash](bash/) |
+| **Shells** | [Fish](fish/), [Bash](bash/) & [Nushell](nushell/) |
 | **File Manager** | [Yazi](yazi/) |
 | **Fetch Tool** | [Fastfetch](fastfetch/) |
 | **Display Manager** | [sddm](sddm/) |
