@@ -91,14 +91,6 @@ def install_configs():
                 ],
             },
             {
-                "name": "Nushell",
-                "type": "dir",
-                "source": repo_dir / "nushell",
-                "targets": [
-                    config_dir / "nushell",
-                ],
-            },
-            {
                 "name": "Neovim",
                 "type": "dir",
                 "source": repo_dir / "nvim",
