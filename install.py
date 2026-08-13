@@ -91,6 +91,14 @@ def install_configs():
                 ],
             },
             {
+                "name": "Fish",
+                "type": "dir",
+                "source": repo_dir / "fish",
+                "targets": [
+                    config_dir / "fish",
+                ],
+            },
+            {
                 "name": "Neovim",
                 "type": "dir",
                 "source": repo_dir / "nvim",

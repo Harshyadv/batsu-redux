@@ -14,7 +14,7 @@ python3 install.py
 *(On Windows, run `python install.py` in PowerShell or Command Prompt).*
 
 ### 🔗 What gets deployed:
-- **Linux / Unix**: Creates symlinks for **Bash** (`~/.bashrc`), **Fastfetch** (`~/.config/fastfetch/config.jsonc`), **WezTerm** (`~/.wezterm.lua`), and **Neovim** (`~/.config/nvim`).
+- **Linux / Unix**: Creates symlinks for **Bash** (`~/.bashrc`), **Fastfetch** (`~/.config/fastfetch/config.jsonc`), **WezTerm** (`~/.wezterm.lua`), **Fish** (`~/.config/fish`), and **Neovim** (`~/.config/nvim`).
 - **Windows**: Creates hardlinks for files (**Fastfetch**, **WezTerm**) and junctions for folders (**Nushell**, **Neovim**).
 
 ---
