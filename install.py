@@ -5,6 +5,9 @@ import shutil
 import sys
 from pathlib import Path
 
+if platform.system() == "Windows" or os.name == "nt":
+    import _winapi
+
 
 def install_configs():
     if hasattr(sys.stdout, "reconfigure"):
@@ -20,70 +23,126 @@ def install_configs():
     home = Path.home()
     config_dir = home / ".config"
 
-    # Select OS-specific source files
-    fastfetch_src = (
-        repo_dir / "fastfetch" / ("config-windows.jsonc" if is_windows else "config-unix.jsonc")
-    )
-    wezterm_src = (
-        repo_dir / "wezterm" / (".wezterm-windows.lua" if is_windows else ".wezterm-unix.lua")
-    )
+    if is_windows:
+        appdata_env = os.environ.get("APPDATA")
+        appdata = Path(appdata_env) if appdata_env else home / "AppData" / "Roaming"
 
-    # Explicit symlink targets requested
-    configs = [
-        {
-            "name": "Bash",
-            "source": repo_dir / "bash" / ".bashrc",
-            "target": home / ".bashrc",
-        },
-        {
-            "name": "Fastfetch",
-            "source": fastfetch_src,
-            "target": config_dir / "fastfetch" / "config.jsonc",
-        },
-        {
-            "name": "WezTerm",
-            "source": wezterm_src,
-            "target": home / ".wezterm.lua",
-        },
-        {
-            "name": "Neovim",
-            "source": repo_dir / "nvim",
-            "target": config_dir / "nvim",
-        },
-    ]
+        localappdata_env = os.environ.get("LOCALAPPDATA")
+        localappdata = Path(localappdata_env) if localappdata_env else home / "AppData" / "Local"
 
-    # DO NOT TOUCH LIST: oh-my-posh, sddm, yazi (strictly ignored)
+        configs = [
+            {
+                "name": "Fastfetch",
+                "type": "file",
+                "source": repo_dir / "fastfetch" / "config-windows.jsonc",
+                "targets": [
+                    config_dir / "fastfetch" / "config.jsonc",
+                ],
+            },
+            {
+                "name": "WezTerm",
+                "type": "file",
+                "source": repo_dir / "wezterm" / ".wezterm-windows.lua",
+                "targets": [
+                    home / ".wezterm.lua",
+                ],
+            },
+            {
+                "name": "Nushell",
+                "type": "dir",
+                "source": repo_dir / "nushell",
+                "targets": [
+                    appdata / "nushell",
+                ],
+            },
+            {
+                "name": "Neovim",
+                "type": "dir",
+                "source": repo_dir / "nvim",
+                "targets": [
+                    localappdata / "nvim",
+                ],
+            },
+        ]
+    else:
+        configs = [
+            {
+                "name": "Bash",
+                "type": "file",
+                "source": repo_dir / "bash" / ".bashrc",
+                "targets": [
+                    home / ".bashrc",
+                ],
+            },
+            {
+                "name": "Fastfetch",
+                "type": "file",
+                "source": repo_dir / "fastfetch" / "config-unix.jsonc",
+                "targets": [
+                    config_dir / "fastfetch" / "config.jsonc",
+                ],
+            },
+            {
+                "name": "WezTerm",
+                "type": "file",
+                "source": repo_dir / "wezterm" / ".wezterm-unix.lua",
+                "targets": [
+                    home / ".wezterm.lua",
+                ],
+            },
+            {
+                "name": "Nushell",
+                "type": "dir",
+                "source": repo_dir / "nushell",
+                "targets": [
+                    config_dir / "nushell",
+                ],
+            },
+            {
+                "name": "Neovim",
+                "type": "dir",
+                "source": repo_dir / "nvim",
+                "targets": [
+                    config_dir / "nvim",
+                ],
+            },
+        ]
 
     for item in configs:
         name = item["name"]
+        item_type = item["type"]
         source = item["source"]
-        target = item["target"]
 
         if not source.exists():
-            print(f"❌ [ERROR] Source not found: {source}")
+            print(f"❌ [ERROR] Source file/folder not found: {source}")
             continue
 
-        # Ensure parent folder exists
-        target.parent.mkdir(parents=True, exist_ok=True)
+        for target in item["targets"]:
+            # Ensure parent folder exists
+            target.parent.mkdir(parents=True, exist_ok=True)
 
-        # Cleanup existing target file / link / directory before linking
-        if target.exists() or target.is_symlink():
-            if target.is_dir() and not target.is_symlink():
-                try:
-                    os.rmdir(target)
-                except OSError:
-                    shutil.rmtree(target)
+            # Cleanup existing target
+            if target.exists() or target.is_symlink():
+                if target.is_dir() and not target.is_symlink():
+                    try:
+                        os.rmdir(target)
+                    except OSError:
+                        shutil.rmtree(target)
+                else:
+                    target.unlink()
+
+            if is_windows:
+                if item_type == "dir":
+                    _winapi.CreateJunction(str(source), str(target))
+                    print(f"🔗 [{name}] Junction: '{source.relative_to(repo_dir)}' -> '{target}'")
+                else:
+                    os.link(source, target)
+                    print(f"🔗 [{name}] Hardlinked: '{source.relative_to(repo_dir)}' -> '{target}'")
             else:
-                target.unlink()
+                target.symlink_to(source)
+                print(f"🔗 [{name}] Symlinked: '{source.relative_to(repo_dir)}' -> '{target}'")
 
-        target_is_dir = source.is_dir()
-        try:
-            target.symlink_to(source, target_is_directory=target_is_dir)
-            print(f"🔗 [{name}] Symlinked: '{source.relative_to(repo_dir)}' -> '{target}'")
-        except Exception as e:
-            print(f"❌ [{name}] Failed to symlink '{source.relative_to(repo_dir)}' -> '{target}': {e}")
-
-    print("\n🎉 All specified configurations symlinked successfully!")
+    print("\n🎉 All configurations deployed successfully!")
 
 
 if __name__ == "__main__":
