@@ -56,3 +56,4 @@ python3 install.py
 
 > [!NOTE]
 > Please verify and update file paths in the config files to match your local setup environment.
+> All of this was possible via `Antigravity CLI`
