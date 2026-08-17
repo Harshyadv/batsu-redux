@@ -25,7 +25,7 @@ config.font_size = 11.0
 config.line_height = 1.05
 
 -- 4. Theme & Color Scheme
-config.color_scheme = 'Gruvbox Dark (Gogh)'
+config.color_scheme = 'Campbell (Gogh)'
 -- config.window_background_opacity = 0.93
 
 -- 5. Terminal Emulation & ConPTY Fixes (Windows Specific)
