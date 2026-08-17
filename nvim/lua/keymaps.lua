@@ -256,3 +256,32 @@ end
 -- <c-n>/<c-p> or <up>/<down> to select next/previous item
 -- <c-e> to hide menu
 -- <c-k> to toggle signature help
+
+-- ============================================================
+-- OBSIDIAN KEYMAPS
+-- ============================================================
+do
+  -- Vault Navigation & Notes
+  vim.keymap.set('n', '<leader>on', '<cmd>Obsidian new<CR>', { desc = '[O]bsidian [N]ew note' })
+  vim.keymap.set('n', '<leader>of', '<cmd>Obsidian quick_switch<CR>', { desc = '[O]bsidian [F]ind note (quick switch)' })
+  vim.keymap.set('n', '<leader>os', '<cmd>Obsidian search<CR>', { desc = '[O]bsidian [S]earch (grep in vault)' })
+  vim.keymap.set('n', '<leader>ot', '<cmd>Obsidian tags<CR>', { desc = '[O]bsidian [T]ags' })
+  vim.keymap.set('n', '<leader>ob', '<cmd>Obsidian backlinks<CR>', { desc = '[O]bsidian [B]acklinks' })
+  vim.keymap.set('n', '<leader>ol', '<cmd>Obsidian links<CR>', { desc = '[O]bsidian [L]inks in note' })
+  vim.keymap.set('n', '<leader>oc', '<cmd>Obsidian toc<CR>', { desc = '[O]bsidian Table of [C]ontents' })
+  vim.keymap.set('n', '<leader>oo', '<cmd>Obsidian open<CR>', { desc = '[O]bsidian [O]pen in desktop app' })
+  vim.keymap.set('n', '<leader>ow', '<cmd>Obsidian workspace<CR>', { desc = '[O]bsidian Switch [W]orkspace' })
+  vim.keymap.set('n', '<leader>op', '<cmd>Obsidian template<CR>', { desc = '[O]bsidian Insert Tem[p]late' })
+  vim.keymap.set('n', '<leader>oi', '<cmd>Obsidian paste_img<CR>', { desc = '[O]bsidian Paste [I]mage' })
+  vim.keymap.set('n', '<leader>or', '<cmd>Obsidian rename<CR>', { desc = '[O]bsidian [R]ename note' })
+
+  -- Daily Notes
+  vim.keymap.set('n', '<leader>od', '<cmd>Obsidian today<CR>', { desc = '[O]bsidian [D]aily note (today)' })
+  vim.keymap.set('n', '<leader>oy', '<cmd>Obsidian yesterday<CR>', { desc = '[O]bsidian [Y]esterday daily note' })
+  vim.keymap.set('n', '<leader>om', '<cmd>Obsidian tomorrow<CR>', { desc = '[O]bsidian To[m]orrow daily note' })
+
+  -- Visual Mode Mappings (Linking & Extracting)
+  vim.keymap.set('v', '<leader>oe', '<cmd>Obsidian extract_note<CR>', { desc = '[O]bsidian [E]xtract selection to note' })
+  vim.keymap.set('v', '<leader>ok', '<cmd>Obsidian link<CR>', { desc = '[O]bsidian Lin[k] selection' })
+  vim.keymap.set('v', '<leader>on', '<cmd>Obsidian link_new<CR>', { desc = '[O]bsidian Link selection to [N]ew note' })
+end
