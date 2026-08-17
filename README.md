@@ -11,6 +11,7 @@ Run the cross-platform installer script (`install.py`) to automatically deploy c
 ```bash
 python3 install.py
 ```
+
 *(On Windows, run `python install.py` in PowerShell or Command Prompt).*
 
 ### 🔗 What gets deployed:

@@ -1,9 +1,38 @@
--- Obsidian integration for Neovim (actively maintained community fork: obsidian-nvim/obsidian.nvim)
+local function get_workspaces()
+  local vaults = {
+    { name = 'HarshPro', rel = 'Harsh/HarshPro' },
+    { name = 'HarshPer', rel = 'Harsh/.HarshPer' },
+  }
+
+  local resolved = {}
+  for _, vault in ipairs(vaults) do
+    local candidates = {
+      vim.fn.expand('~/Documents/Notes/' .. vault.rel),
+      'D:/Documents/Notes/' .. vault.rel,
+    }
+    for _, path in ipairs(candidates) do
+      if vim.fn.isdirectory(path) == 1 then
+        table.insert(resolved, { name = vault.name, path = path })
+        break
+      end
+    end
+  end
+
+  return resolved
+end
+
+local workspaces = get_workspaces()
+
 return {
   'obsidian-nvim/obsidian.nvim',
   version = '*', -- Recommended: use latest release
   lazy = true,
-  ft = 'markdown',
+  cond = function()
+    return #workspaces > 0
+  end,
+  cmd = {
+    'Obsidian',
+  },
   event = {
     'BufReadPre ' .. vim.fn.expand '~' .. '/Documents/Notes/**.md',
     'BufNewFile ' .. vim.fn.expand '~' .. '/Documents/Notes/**.md',
@@ -21,16 +50,7 @@ return {
     legacy_commands = false,
 
     -- Workspaces: define your Obsidian vaults
-    workspaces = {
-      {
-        name = 'HarshPro',
-        path = 'D:/Documents/Notes/Harsh/HarshPro',
-      },
-      {
-        name = 'HarshPer',
-        path = 'D:/Documents/Notes/Harsh/.HarshPer',
-      },
-    },
+    workspaces = workspaces,
 
     -- Where new notes are created by default ("current_dir" or "notes_subdir")
     new_notes_location = 'current_dir',
