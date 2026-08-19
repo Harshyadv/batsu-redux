@@ -2,6 +2,9 @@
 return {
   'mfussenegger/nvim-lint',
   event = { 'BufReadPost', 'BufNewFile' },
+  cond = function()
+    return vim.fn.executable 'markdownlint' == 1
+  end,
   config = function()
     local lint = require 'lint'
     lint.linters_by_ft = {

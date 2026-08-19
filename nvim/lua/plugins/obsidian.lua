@@ -27,17 +27,12 @@ return {
   'obsidian-nvim/obsidian.nvim',
   version = '*', -- Recommended: use latest release
   lazy = true,
+  ft = { 'markdown', 'quarto' },
   cond = function()
     return #workspaces > 0
   end,
   cmd = {
     'Obsidian',
-  },
-  event = {
-    'BufReadPre ' .. vim.fn.expand '~' .. '/Documents/Notes/**.md',
-    'BufNewFile ' .. vim.fn.expand '~' .. '/Documents/Notes/**.md',
-    'BufReadPre D:/Documents/Notes/**.md',
-    'BufNewFile D:/Documents/Notes/**.md',
   },
   dependencies = {
     'nvim-lua/plenary.nvim',

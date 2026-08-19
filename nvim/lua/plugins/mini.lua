@@ -86,9 +86,11 @@ return {
       end,
     }
 
-    -- Force a refresh right after startup sequence finishes
+    -- Force a refresh right after startup sequence finishes (only if starter dashboard is active)
     vim.schedule(function()
-      starter.refresh()
+      if vim.bo.filetype == 'ministarter' then
+        starter.refresh()
+      end
     end)
   end,
 }
